@@ -1,7 +1,7 @@
 import org.scalacheck.Properties
 import org.scalacheck.Prop.forAll
 
-import ebarrientos.stdutils.sort.Sort.quickSort
+import ebarrientos.stdutils.sort.Sort.{quickSort, mergeSort}
 
 /** Tests for all sort algorithms */
 object SortTests extends Properties("Sort") {
@@ -10,5 +10,9 @@ object SortTests extends Properties("Sort") {
   
   property("quickSort.orders") = forAll { l: List[Int] =>
     isOrdered(quickSort(l))
+  }
+  
+  property("mergesort.orders") = forAll { l: Seq[Int] =>
+    isOrdered(mergeSort(l))
   }
 }
