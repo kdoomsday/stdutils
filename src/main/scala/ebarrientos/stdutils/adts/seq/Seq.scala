@@ -10,7 +10,7 @@ import scala.language.implicitConversions
 /** Sequence of elements. Elements are ordered. */
 
 @typeclass trait TCSeq[Repr[_]] extends Coll[Repr]{
-  @op("|+|") def prepend[A](seq: Repr[A], a: A): Repr[A]
+  def prepend[A](seq: Repr[A], a: A): Repr[A]
 }
 
 /*
