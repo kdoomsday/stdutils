@@ -1,16 +1,12 @@
 package ebarrientos.stdutils.adts
 
+import simulacrum._
+
 import scala.language.higherKinds
+import scala.language.implicitConversions
 
 /** Common typeclass for all collections */
-trait Coll[A, Repr[_]] {
-  def contains(r: Repr[A], a: A): Boolean
-  def empty(r: Repr[A]): Boolean
-}
-
-object Coll {
-  implicit class CollOps[A, Repr[_]](r: Repr[A])(implicit ev: Coll[A, Repr]) {
-    def contains(a: A): Boolean = ev.contains(r, a)
-    def empty: Boolean = ev.empty(r)
-  }
+@typeclass trait Coll[Repr[_]] {
+  def contains[A](r: Repr[A], a: A): Boolean
+  def empty[A](r: Repr[A]): Boolean
 }

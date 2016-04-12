@@ -7,27 +7,18 @@ case class Node[A](head: A, tail: LL[A]) extends LL[A]
 case class Empty[A]() extends LL[A]
 
 object LL {
-  import ebarrientos.stdutils.adts.Coll
-  import TCSeq.TCSeqOps
+  implicit def LLTCSeq: TCSeq[LL] = new TCSeq[LL]() {
+    def prepend[A](seq: LL[A], a: A): LL[A] = Node(a, seq)
 
-  implicit def LLColl[A]: Coll[A, LL] = new Coll[A, LL] {
-    def empty(seq: LL[A]): Boolean = seq match {
-      case Empty() => true
-      case Node(_, _) => false
-    }
-
-    def contains(seq: LL[A], a: A): Boolean = seq match {
+    def contains[A](seq: LL[A], a: A): Boolean = seq match {
+      case Node(h, t) => if (h == a) true
+                         else contains(t, a)
       case Empty() => false
-      case Node(h, t) => h == a || contains(t, a)
     }
-  }
 
-  implicit def LLTCSeq[A]: TCSeq[A, LL] = new TCSeq[A, LL]() {
-    def prepend(seq: LL[A], a: A): LL[A] = Node(a, seq)
-
-    def append(seq: LL[A], a: A) = seq match {
-      case e @ Empty() => Node(a, e)
-      case Node(h, t) => Node(h, append(t, a))
+    def empty[A](seq: LL[A]): Boolean = seq match {
+      case Node(_, _) => false
+      case Empty() => true
     }
   }
 
