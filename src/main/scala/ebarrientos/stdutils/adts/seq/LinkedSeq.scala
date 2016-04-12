@@ -1,6 +1,6 @@
 package ebarrientos.stdutils.adts.seq
 
-import TCSeq.ToTCSeqOps
+import ebarrientos.stdutils.adts.Coll
 
 /** Linked list implementation */
 
@@ -8,7 +8,7 @@ sealed trait LL[A]
 case class Node[A](head: A, tail: LL[A]) extends LL[A]
 case class Empty[A]() extends LL[A]
 
-object LL extends ToTCSeqOps {
+object LL extends TCSeq.ToTCSeqOps with Coll.ToCollOps {
 
   implicit def LLTCSeq: TCSeq[LL] = new TCSeq[LL]() {
     def prepend[A](seq: LL[A], a: A): LL[A] = Node(a, seq)
