@@ -11,6 +11,7 @@ import scala.language.implicitConversions
 
 @typeclass trait TCSeq[Repr[_]] extends Coll[Repr]{
   def prepend[A](seq: Repr[A], a: A): Repr[A]
+  def append[A](seq: Repr[A], a: A): Repr[A]
 }
 
 /*

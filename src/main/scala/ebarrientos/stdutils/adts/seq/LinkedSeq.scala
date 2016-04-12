@@ -13,6 +13,11 @@ object LL extends TCSeq.ToTCSeqOps with Coll.ToCollOps {
   implicit def LLTCSeq: TCSeq[LL] = new TCSeq[LL]() {
     def prepend[A](seq: LL[A], a: A): LL[A] = Node(a, seq)
 
+    def append[A](seq: LL[A], a: A): LL[A] = seq match {
+      case Empty() => LL(a)
+      case Node(h, t) => Node(h, append(t, a))
+    }
+
     def contains[A](seq: LL[A], a: A): Boolean = seq match {
       case Node(h, t) => if (h == a) true
                          else contains(t, a)
