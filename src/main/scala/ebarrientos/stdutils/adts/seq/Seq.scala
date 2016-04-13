@@ -13,11 +13,3 @@ import scala.language.implicitConversions
   def prepend[A](seq: Repr[A], a: A): Repr[A]
   def append[A](seq: Repr[A], a: A): Repr[A]
 }
-
-/*
-object TCSeqSyntax {
-  implicit class TCSeqOps[A, Repr[_]](seq: Repr[A])(implicit ev: TCSeq[Repr]) {
-    def prepend(a: A): Repr[A] = ev.prepend(seq, a)
-  }
-}
-*/
