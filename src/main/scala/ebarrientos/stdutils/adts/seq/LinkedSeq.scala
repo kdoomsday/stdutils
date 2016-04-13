@@ -33,10 +33,15 @@ object LL
       case Empty() => true
     }
 
-    /** TODO Tail recursive version */
-    def size[A](seq: LL[A]): Int = seq match {
-      case Empty()    => 0
-      case Node(h, t) => 1 + size(t)
+
+    def size[A](seq: LL[A]): Int = {
+      @scala.annotation.tailrec
+      def s(ss: LL[A], acc: Int): Int = ss match {
+        case Empty() => acc
+        case Node(_, ts) => s(ts, acc+1)
+      }
+
+      s(seq, 0)
     }
   }
 
