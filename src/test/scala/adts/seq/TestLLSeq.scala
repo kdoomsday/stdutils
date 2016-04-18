@@ -1,9 +1,11 @@
+package adts.seq
+
 import org.scalacheck.Properties
 import org.scalacheck.Prop.forAll
 import org.scalacheck.{ Gen, Arbitrary }
 
 
-object LLSeqTests extends Properties("LL") {
+object TestLLSeq extends Properties("LL") {
   import ebarrientos.stdutils.adts.seq.LL
 
   /** Makes an LL from a standard scala List */
@@ -60,7 +62,7 @@ object LLSeqTests extends Properties("LL") {
 
   property("Nonempty list is not empty") = {
     forAll { i: Int =>
-      LL(i).empty == false
+      !LL(i).empty
     }
   }
 
@@ -83,8 +85,6 @@ object LLSeqTests extends Properties("LL") {
 
 
   property("List equals itself") = {
-    import ebarrientos.stdutils.adts.Eq
-
     forAll { l: List[Int] =>
       val ll = fromList(l)
       ll === ll
@@ -108,6 +108,20 @@ object LLSeqTests extends Properties("LL") {
       val ll = fromList(l.reverse)  // From llist makes the LL backwards
       val f = (x: Int) => 2*x
       l2llEquality(l.map(f), ll.map(f))
+    }
+  }
+
+  property("Foldable on empty gives back the initial value") = {
+    forAll { i: Int =>
+      LL().foldLeft(i)((i1: Int, i2: Int) => i1 + i2) == i
+    }
+  }
+
+  property("Fold sum on list of ints is the same as regular list") = {
+    forAll { l: List[Int] =>
+      val ll = fromList(l)
+
+      ll.foldLeft(0)(_ + _) == l.foldLeft(0)(_ + _)
     }
   }
 }

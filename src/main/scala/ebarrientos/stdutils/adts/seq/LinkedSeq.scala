@@ -1,6 +1,6 @@
 package ebarrientos.stdutils.adts.seq
 
-import ebarrientos.stdutils.adts.{ Coll, FiniteColl, Eq, Functor }
+import ebarrientos.stdutils.adts.{ Coll, FiniteColl, Eq, Functor, Foldable }
 
 /** Linked list implementation */
 
@@ -14,6 +14,7 @@ object LL
   with    FiniteColl.ToFiniteCollOps
   with    Eq.ToEqOps
   with    Functor.ToFunctorOps
+  with    Foldable.ToFoldableOps
 {
   /** TCSeq operations */
   implicit def tcSeqLL: TCSeq[LL] = new TCSeq[LL]() {
@@ -63,6 +64,14 @@ object LL
     def map[A, B](l: LL[A], f: (A => B)): LL[B] = l match {
       case Node(a, t) => Node(f(a), map(t, f))
       case Empty()    => Empty()
+    }
+  }
+
+  /** Foldable ops */
+  implicit def foldableLL: Foldable[LL] = new Foldable[LL] {
+    override def foldLeft[A, B](r: LL[A], init: B)(f: (B, A) => B): B = r match {
+      case Empty()    => init
+      case Node(h, t) => foldLeft(t, f(init, h))(f)
     }
   }
 
