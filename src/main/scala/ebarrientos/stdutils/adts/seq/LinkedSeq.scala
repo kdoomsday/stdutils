@@ -69,9 +69,14 @@ object LL
 
   /** Foldable ops */
   implicit def foldableLL: Foldable[LL] = new Foldable[LL] {
-    override def foldLeft[A, B](r: LL[A], init: B)(f: (B, A) => B): B = r match {
-      case Empty()    => init
-      case Node(h, t) => foldLeft(t, f(init, h))(f)
+    override def foldLeft[A, B](r: LL[A], acc: B)(f: (B, A) => B): B = r match {
+      case Empty()    => acc
+      case Node(h, t) => foldLeft(t, f(acc, h))(f)
+    }
+
+    override def foldRight[A, B](r: LL[A], acc: B)(f: (A, B) => B): B = r match {
+      case Empty()    => acc
+      case Node(h, t) => foldRight(t, f(h, acc))(f)
     }
   }
 

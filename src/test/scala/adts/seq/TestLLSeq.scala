@@ -111,9 +111,15 @@ object TestLLSeq extends Properties("LL") {
     }
   }
 
-  property("Foldable on empty gives back the initial value") = {
+  property("Fold left on empty gives back the initial value") = {
     forAll { i: Int =>
-      LL().foldLeft(i)((i1: Int, i2: Int) => i1 + i2) == i
+      LL[Int]().foldLeft(i)(_ + _) == i
+    }
+  }
+
+  property("Fold right on empty gives back the initial value") = {
+    forAll { i: Int =>
+      LL[Int]().foldRight(i)(_ + _) == i
     }
   }
 
@@ -123,5 +129,15 @@ object TestLLSeq extends Properties("LL") {
 
       ll.foldLeft(0)(_ + _) == l.foldLeft(0)(_ + _)
     }
+  }
+
+  property("FoldLeft works for sting concat as expected") = {
+    val ll = fromList((1 to 9).toList.reverse)  // Note reverse, because fromList reverses
+    ll.foldLeft("")(_ + _) == "123456789"
+  }
+
+  property("FoldRight works for string concat reversed") = {
+    val ll = fromList((1 to 9).toList)
+    ll.foldRight("")(_ + _) == "123456789"
   }
 }

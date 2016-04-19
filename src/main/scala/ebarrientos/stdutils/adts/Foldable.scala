@@ -10,5 +10,7 @@ import scala.language.{ higherKinds, implicitConversions }
   * Time: 09:12 PM
   */
 @typeclass trait Foldable[Repr[_]] {
-  def foldLeft[A, B](r: Repr[A], init: B)(f: (B, A) => B): B
+  def foldLeft[A, B](r: Repr[A], acc: B)(f: (B, A) => B): B
+
+  def foldRight[A, B](r: Repr[A], acc: B)(f: (A, B) => B): B
 }
