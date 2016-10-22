@@ -1,6 +1,6 @@
 package ebarrientos.stdutils.adts.set
 
-trait Treeset[A] extends Set[A] {
+trait Treeset[A] extends ebarrientos.stdutils.adts.set.Set[A] {
   def ord: Ordering[A]
   override def add(a: A): Treeset[A]
 }
@@ -23,7 +23,6 @@ object Treeset {
 /** Empty set. */
 case class Leaf[A] private[set](ord: Ordering[A]) extends Treeset[A] {
   def contains(a: A) = false
-  def empty: Boolean = true
   
   def add(a: A): Treeset[A] = Node(a, this, this, ord)
 }
@@ -40,9 +39,7 @@ case class Node[A] private[set](
     if (elem == a) true
     else if (ord.lt(a, elem)) left.contains(a)
     else right.contains(a)
-
-  def empty: Boolean = false
-
+      
   def add(a: A): Treeset[A] =
     if (elem == a) this
     else if (ord.lt(a, elem)) new Node(elem, left add a, right, ord)
