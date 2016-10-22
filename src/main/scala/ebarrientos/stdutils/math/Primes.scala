@@ -12,6 +12,7 @@ object Primes {
     }
   }
 
+  /** Al primes less than or equal to top */
   def primeSieve(top: Int): Seq[Int] = {
     val nums = Array.fill(top+1)(true)
 
@@ -19,14 +20,15 @@ object Primes {
 
     var next = 3
     while (next < top) {
-      for (pos <- next*next to top by next) {
+      for (pos <- next*next to top by next)
         nums(pos) = false
+      
+      next += 2
+      while (next <= top && !nums(next)) {
+        next += 2
       }
-      while (!nums(next)) next += 2
     }
 
     Seq(2) ++ ( for(i <- 3 to top by 2 if nums(i)) yield i )
   }
-
-  def setSieve(top: Long): Set[Long] = Set()
 }
